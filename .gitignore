@@ -2,3 +2,6 @@ build/
 .vscode/
 sdkconfig.defaults
 sdkconfig.old
+Makefile
+debug.log
+example_test.py
