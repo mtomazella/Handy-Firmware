@@ -49,12 +49,13 @@ public:
             _fingers[i] = Gpio::GpioOutput( _finger_pins[i], false, _isPwm[i] );
         }
     }
-    void init           ( void );
-    void listen         ( void );
-    void actuateFingers ( void );
-    void switchHandMode ( void );
-    void setHandState   ( void );
-    void setHandState   ( bool state );
+    void init            ( void );
+    void listen          ( void );
+    void actuateFingers  ( void );
+    void switchHandMode  ( void );
+    void setHandState    ( void );
+    void setHandState    ( bool state );
+    void setFingerToAngle( int index, int angle );
 
         /* Handler Memory */
     Gpio::GpioOutput state_led;

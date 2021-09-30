@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <iostream>
+#include <cmath>
 #include "HardwareController.h"
 #include "Gpio.h"
 
@@ -54,9 +55,13 @@ void HardwareController::setHandState ( bool state ) {
 
 void HardwareController::switchHandMode ( void ) {
     _hand->switchMode();
-    setHandState( _hand->get_state() );
+    setHandState( !_hand->get_state() );
     _ble_table->setModeIndex( _hand->get_currentModeIndex() );
     _ble_table->setModeName ( _hand->get_currentModeName()  );
+}
+
+int normalizeAngle ( int angle ) { 
+    return ( angle < SERVO_MIN_ANGLE )? SERVO_MIN_ANGLE : ( angle > SERVO_MAX_ANGLE )? SERVO_MAX_ANGLE : angle;
 }
 
 void HardwareController::actuateFingers ( void ) {
@@ -79,17 +84,19 @@ void HardwareController::actuateFingers ( void ) {
         int angle    = fingerState[i][0];
         int start    = fingerState[i][1];
         int duration = fingerState[i][2];
-        printf("\n\n%d , %d , %d , %d", time, angle, start, duration);
+        printf("\n\n%d , %d , %d , %d", time, normalizeAngle(angle), start, duration );
         if ( time >= start && time <= start+duration ) {
-            if ( duration == 0 ) _fingers[i].set( angle );
-            else _fingers[i].set( initialAngles[i] + ( angle - initialAngles[i] )/duration * ( time - start ) );
+            if ( duration == 0 ) setFingerToAngle( i, angle );
+            else setFingerToAngle( i, std::floor(initialAngles[i] + ( (double)angle - (double)initialAngles[i] )/(double)duration * ( time - start )) ); // quando a divisão é tratada como intiero a falta da parte decimal, amplificado pela multiplicação, causa uma diferença muito grande
         } else if ( time > start + duration )
-            _fingers[i].set( angle );
+            setFingerToAngle( i, angle );
     }
 
     this->time += 1;
 }
-
+void HardwareController::setFingerToAngle ( int index, int angle ) {
+    _fingers[index].set( normalizeAngle(angle) );
+}
 
     /* Handlers */
 

@@ -24,8 +24,10 @@
 #define INPUT_STATE_PIN GPIO_NUM_32
 
     /* Configuration */
-const static int FINGER_COUNT = 8;
-const static int MODE_COUNT   = 3;
+const static int FINGER_COUNT    = 8;
+const static int MODE_COUNT      = 3;
+const static int SERVO_MAX_ANGLE = 180;
+const static int SERVO_MIN_ANGLE = 1;
 
 static unsigned int MODE_CHAR_PTR_SIZE = MODE_COUNT * ( /*name*/40 + /*;*/1 + /*open+closed*/2 * FINGER_COUNT * /*___.___.___,*/12 + /*|*/1 + /*safe-T-boi*/20 );
 

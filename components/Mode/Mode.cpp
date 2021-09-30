@@ -47,7 +47,7 @@ void Mode::defineDuration ( ) {
         int durationC = valuesClose[i][1] + valuesClose[i][2];
         int durationO = valuesOpen[i][1]  + valuesOpen[i][2] ;
         if ( durationC > maxClose ) maxClose = durationC;
-        if ( durationO < maxOpen )  maxOpen  = durationO;
+        if ( durationO > maxOpen )  maxOpen  = durationO;
     }
     
     durationClose = maxClose;
